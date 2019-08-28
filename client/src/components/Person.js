@@ -1,20 +1,19 @@
-import React, { memo } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { lighten } from "polished";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react";
 
 const Person = props => {
-  const { person, className, firePerson } = props;
+  const { person, className } = props;
+
   return (
     <div className={className}>
       <Link to={`/person/${person.id}`}>
         {person.lastName}, {person.firstName}
       </Link>
       <div>
-        <button
-          disabled={person.isBeingFired}
-          onClick={() => firePerson(person.id)}
-        >
+        <button disabled={person.isBeingFired} onClick={() => person.fire()}>
           Liberate
         </button>
       </div>
@@ -22,7 +21,7 @@ const Person = props => {
   );
 };
 
-export default memo(styled(Person)`
+export default observer(styled(Person)`
   border: 10px solid rgb(0, 0, 0);
   margin: 1em 0;
   border-radius: 10px;

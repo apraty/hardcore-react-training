@@ -1,22 +1,18 @@
 import React from "react";
 import PersonList from "./PersonList";
 import HirePersonForm from "./HirePersonForm";
+import { useAppModels } from "../config/modelHelpers";
 
-const IndexPage = props => {
-  const { firePerson, hirePerson, persons } = props;
-
-  const isGood = p => p.age < 50 || p.isRelatedToCEO === true;
-
-  const goodPersons = persons.filter(isGood);
-  const badPersons = persons.filter(p => !isGood(p));
+const IndexPage = () => {
+  const { personStore } = useAppModels();
 
   return (
     <div>
-      <HirePersonForm hirePerson={hirePerson} />
+      <HirePersonForm/>
       <h2>Bad Persons</h2>
-      <PersonList firePerson={firePerson} persons={badPersons} showMetadata />
+      <PersonList persons={personStore.getBadPersons()} showMetadata/>
       <h2>Good Persons</h2>
-      <PersonList firePerson={firePerson} persons={goodPersons} />
+      <PersonList persons={personStore.getGoodPersons()}/>
     </div>
   );
 };
