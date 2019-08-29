@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import uuid from "uuid";
 
 import * as Yup from "yup";
+import {useAppModels} from "../config/modelHelpers";
 
 const schema = Yup.object().shape({
   firstName: Yup.string()
@@ -15,8 +16,8 @@ const schema = Yup.object().shape({
     .required("Required")
 });
 
-const HirePersonForm = props => {
-  const { hirePerson } = props;
+const HirePersonForm = () => {
+  var { personStore } = useAppModels();
 
   return (
     <Formik
@@ -36,7 +37,7 @@ const HirePersonForm = props => {
           age: 30
         };
 
-        hirePerson(newPerson);
+        personStore.hirePerson(newPerson);
       }}
     >
       {({

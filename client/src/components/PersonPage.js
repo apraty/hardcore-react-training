@@ -1,4 +1,5 @@
 import React from "react";
+import { observer } from "mobx-react";
 
 const needsPerson = params => Component => props => {
   const { person, ...rest } = props;
@@ -45,4 +46,4 @@ const PersonPage = props => {
   );
 };
 
-export default PersonPage;
+export default observer(PersonPage);

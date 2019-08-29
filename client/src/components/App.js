@@ -1,66 +1,40 @@
 import React, { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getPersons, hirePerson, firePerson } from "../ducks/person";
 import Spinner from "./Spinner";
 import IndexPage from "./IndexPage";
 import PersonPage from "./PersonPage";
 import NotFoundPage from "./NotFoundPage";
 
 import { Switch, Route } from "react-router";
+import { observer } from "mobx-react";
+import { useAppModels } from "../config/modelHelpers";
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  const persons = useSelector(state => state.person.get("persons"));
-  const loading = useSelector(state => state.person.get("loading") > 0);
+  const appModels = useAppModels();
+  const { personStore } = appModels;
 
   useEffect(() => {
-    dispatch(getPersons());
-  }, [dispatch]);
-
-  const doFirePerson = useCallback(
-    id => {
-      console.log("Son, you do not disappoint anymore.");
-      dispatch(firePerson(id));
-    },
-    [dispatch]
-  );
-
-  const doHirePerson = person => {
-    dispatch(hirePerson(person));
-  };
+    personStore.getPersons();
+  }, []);
 
   return (
     <div>
-      {loading && <Spinner />}
-      <h1>Fraktio ERP v1000.0</h1>
+      {appModels.isLoading() && <Spinner/>}
+      <h1>MST ERP v2000.0</h1>
 
       <Switch>
-        <Route
-          exact
-          path="/"
-          render={props => {
-            return (
-              <IndexPage
-                hirePerson={doHirePerson}
-                firePerson={doFirePerson}
-                persons={persons}
-              />
-            );
-          }}
-        />
+        <Route exact path="/" component={IndexPage}/>
         <Route
           exact
           path="/person/:id"
           render={props => {
-            const person = persons.get(props.match.params.id);
-            return <PersonPage person={person} />;
+            const person = personStore.persons.get(props.match.params.id);
+            return <PersonPage person={person}/>;
           }}
         />
-        <Route component={NotFoundPage} />
+        <Route component={NotFoundPage}/>
       </Switch>
     </div>
   );
 };
 
-export default App;
+export default observer(App);

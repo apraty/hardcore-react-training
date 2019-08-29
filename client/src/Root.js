@@ -2,9 +2,8 @@ import React from "react";
 import App from "./components/App";
 import { createGlobalStyle } from "styled-components";
 import { Normalize } from "styled-normalize";
-import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
+import { Provider } from "./config/modelHelpers";
 import money from "./assets/money.jpg";
 
 const GlobalStyle = createGlobalStyle`
@@ -17,17 +16,17 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Root = props => {
-  const { store } = props;
+  const { appModels } = props;
 
   return (
     <>
-      <GlobalStyle />
-      <Normalize />
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
+    <GlobalStyle/>
+    <Normalize/>
+    <Provider value={appModels}>
+      <BrowserRouter>
+        <App/>
+      </BrowserRouter>
+    </Provider>
     </>
   );
 };
